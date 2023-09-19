@@ -1,0 +1,65 @@
+/* Style dasar header */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/* Gaya untuk menu utama */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Gaya untuk dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    min-width: 100px;
+    z-index: 1;
+}
+
+/* Style untuk tombol Menu di perangkat mobile */
+.menu-button {
+    display: none;
+    cursor: pointer;
+}
+
+/* Tampilkan menu setelah tombol Menu diklik */
+#menu.active {
+    display: block;
+}
+
+/* Media query untuk perangkat mobile */
+@media (max-width: 768px) {
+    nav ul {
+        display: none;
+    }
+
+    .menu-button {
+        display: block;
+    }
+
+    /* Tambahkan gaya untuk tombol Menu saat aktif */
+    .menu-button.active + #menu {
+        display: block;
+    }
+}

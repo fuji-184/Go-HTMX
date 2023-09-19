@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title></title>
+  </head>
+
+  <body>
+    
+{{ range . }}
+
+{{ .Id }}
+{{ .Judul }}
+{{ .Isi }}
+{{ .Ktg }}
+{{ .Tgl }}
+
+{{ end }}
+    
+    <form hx-post="/tes" enctype="multipart/form-data">
+      <input type="file" name="file" id="file"/>
+      <input type="number" name="no" id="no"/>
+      <button type="submit">Submit</button>
+    </form>
+    
+    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
+  </body>
+</html>

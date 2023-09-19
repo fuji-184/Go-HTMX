@@ -1,3 +1,5 @@
+
+
 package main
 
 import (
@@ -7,13 +9,18 @@ import (
     "net/http"
     "sync"
     "time"
+    "os"
+    "io"
 
     _ "github.com/go-sql-driver/mysql"
 )
 
 type Item struct {
     Id int `db:"id"`
-    No int `db:"no"`
+    Judul string `db:"judul"`
+    Isi string `db:"isi"`
+    Ktg int `db:"ktg"`
+    Tgl time.Time `db:"tgl"`
 }
 
 func main() {
@@ -27,6 +34,9 @@ func main() {
     db.SetConnMaxLifetime(time.Minute * 3)
     db.SetMaxOpenConns(10)
     db.SetMaxIdleConns(10)
+    
+    http.Handle("/gambar/", http.StripPrefix("/gambar/",
+    http.FileServer(http.Dir("gambar"))))
 
     http.HandleFunc("/tes", func(w http.ResponseWriter, r *http.Request) {
         if r.Method == http.MethodGet {
@@ -37,7 +47,7 @@ func main() {
             wg.Add(1)
             go func() {
                 defer wg.Done()
-                stmt, err := db.Prepare("SELECT * FROM tes")
+                stmt, err := db.Prepare("SELECT * FROM post")
                 if err != nil {
                     http.Error(w, err.Error(), http.StatusInternalServerError)
                     return
@@ -53,11 +63,19 @@ func main() {
 
                 for rows.Next() {
                     var data Item
-                    err := rows.Scan(&data.Id, &data.No)
+                    var times string
+                    err := rows.Scan(&data.Id, &data.Judul, &data.Isi,
+                    &data.Ktg, &times)
                     if err != nil {
                         http.Error(w, err.Error(), http.StatusInternalServerError)
                         return
                     }
+                    // Mengkonversi string timestampValue menjadi time.Time
+    data.Tgl, err = time.Parse("2006-01-02 15:04:05", times)
+    if err != nil {
+http.Error(w, err.Error(), http.StatusInternalServerError)
+                        return
+    }
                     results = append(results, data)
                 }
             }()
@@ -76,6 +94,9 @@ func main() {
                 return
             }
         } else if r.Method == http.MethodPost {
+          
+         
+          
     no := r.PostFormValue("no")
     
 
@@ -96,8 +117,41 @@ func main() {
     
     
     
-}
+    
 
+
+
+// Menerima file dari frontend
+    file, header, err := r.FormFile("file") // "gambar" adalah nama field pada form HTML
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+    defer file.Close()
+
+    // Mendapatkan nama file dan ekstensinya
+    fileName := header.Filename
+
+    // Membuka file untuk penyimpanan
+    newFile, err := os.Create("gambar/" + fileName)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    defer newFile.Close()
+    
+// Menyalin isi file yang diterima ke file baru
+    _, err = io.Copy(newFile, file)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    
+    
+    // route closer
+}
+// end route
         
 
   
@@ -109,3 +163,5 @@ func main() {
         log.Fatal(err)
     }
 }
+
+

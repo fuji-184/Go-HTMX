@@ -1,23 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+        body {
+            
+            font-family: Arial, sans-serif;
+        }
 
-    <title></title>
-  </head>
+        header {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
 
-  <body>
+        h1 {
+            margin: 0;
+        }
+
+        .nav {
+            
+            height: auto;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        .search {
+            display: flex;
+            width: 200px;
+        }
+
+        .search input {
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        #menu-toggle {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 20px;
+            display: none;
+        }
+
+        #close-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                right: -300px;
+                position: fixed;
+            top: 0;
+            display: block;
+            height: 100%;
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            transition: right 0.3s ease-in-out;
+            }
+            ul {display: block;}
+
+            #menu-toggle {
+                display: block;
+            }
+
+            #menu-toggle.active + .nav {
+                right: 0;
+            }
+
+            #menu-toggle.active {
+                display: none;
+            }
+
+            #close-btn {
+                display: block;
+            }
+        }
+        
+        
+        
+        
+
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Grid 3 kolom responsif */
+    gap: 20px; /* Jarak antar card */
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+.card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+h2 {
+    margin: 10px 0;
+}
+
+.load-more {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.load-more:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Header Keren</h1>
+        <button id="menu-toggle">Menu</button>
+       
+        <div class="nav" id="nav">
+           <button id="close-btn">Close</button>
+            <ul>
+                <li><a href="#">Menu 1</a></li>
+                <li><a href="#">Menu 2</a></li>
+                <li><a href="#">Menu 3</a></li>
+                 <div class="search">
+                <input type="text" placeholder="Cari...">
+                <button>Search</button>
+            </div>
+            </ul>
+           
+        </div>
+    </header>
     
-    {{ range . }}
-    {{ .Id }}
-    {{ .No }}
-    {{ end }}
     
-    <form hx-post="/tes">
-      <input type="number" name="no" id="no"/>
-      <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+        <!-- Card Post 1 -->
+        {{ range . }}
+        <div class="card">
+            <img src="/gambar/IMG-20230916-WA0002.jpg" alt="Gambar 1">
+            <h2>{{ .Judul }}</h2>
+            <p>Kategori: Kategori 1</p>
+        </div>
+        {{ end }}
+
+    </div>
+    <button class="load-more">Load More</button>
     
-    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"></script>
-  </body>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeBtn = document.getElementById('close-btn');
+        const nav = document.getElementById('nav');
+
+        menuToggle.addEventListener('click', () => {
+            
+            nav.style.right = '0';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            
+            nav.style.right = '-300px';
+        });
+    </script>
+</body>
 </html>
